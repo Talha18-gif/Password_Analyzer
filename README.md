@@ -1,20 +1,16 @@
 # 🔐 Password Strength Analyzer
 
 <div align="center">
-  <h3>A professional, modern Password Strength Analyzer built using Python and CustomTkinter.</h3>
+  <h3>A professional, cross-platform Password Strength Analyzer built as both a Python Desktop App and a Static Web App.</h3>
 </div>
 
 ---
 
 ## 📖 About
 
-The **Password Strength Analyzer** is a robust desktop application designed to accurately evaluate the security of user passwords. Unlike basic regex-based checkers, this tool uses the mathematically advanced `zxcvbn` library (the industry standard) to detect entropy, keyboard patterns, and dictionary words. Additionally, it ensures your password hasn't been compromised in a known data breach by securely checking the Have I Been Pwned (HIBP) API.
+The **Password Entropy — Advanced Password Strength Analyzer** is a robust application designed to accurately evaluate the security of user passwords across 5 critical factors: length, character variety, entropy value, pattern detection, and breach exposure.
 
----
-
-## 🎯 Project Purpose
-
-In today's digital landscape, weak passwords are the leading cause of security breaches. The purpose of this project is to provide a clean, accessible, and highly accurate tool for individuals to test their passwords locally. By giving users real-time feedback on *why* their password is weak (e.g., "this is a top-10 common password" or "this takes 3 seconds to crack"), it educates them and encourages better cybersecurity hygiene. 
+Unlike basic regex-based checkers, this tool uses the mathematically advanced `zxcvbn` library (the industry standard) to detect keyboard patterns and dictionary words. Additionally, it integrates securely with the **Have I Been Pwned (HIBP)** API, which indexes over 600M+ compromised passwords, to detect if a password has been exposed in known data breaches.
 
 ---
 
@@ -24,51 +20,52 @@ In today's digital landscape, weak passwords are the leading cause of security b
 - ✔ **Accurate Entropy Check:** Uses `zxcvbn` to detect keyboard walks (e.g., "qwerty"), names, dates, and dictionary words.
 - ✔ **Data Breach Detection:** Connects to the Have I Been Pwned API using k-anonymity (meaning your password is never sent over the network).
 - ✔ **Custom Dictionary Attack:** Instantly flags passwords found in a local `common_passwords.txt` file.
-- ✔ **Strong Password Generator:** Generate a cryptographically secure password with a single click.
+- ✔ **Strong Password Generator:** A built-in generator that suggests cryptographically secure alternatives when the entered password is weak.
 
 ---
 
-## 🎨 Design Tools
+## 💻 Key Skills & Expertise Demonstrated
 
-- **CustomTkinter:** Used to transform the standard Python GUI into a sleek, modern, and responsive interface featuring native Dark Mode support and rounded UI elements.
-- **Figma / UI Principles:** Adhered to modern UX/UI principles, employing color-coded progress bars (Red/Yellow/Green) to provide instant visual feedback on password strength.
+This repository highlights a comprehensive, full-stack cybersecurity skill set:
+
+- **Python**: Used for the Desktop Application and deployment packaging.
+- **CustomTkinter (GUI Design)**: Used to build a sleek, modern, Dark-Mode enabled desktop interface.
+- **JavaScript, HTML, CSS**: Used to build the fast, client-side Web Application version.
+- **API Integration**: Securely fetching data from external web services (HIBP).
+- **Cryptography & Cybersecurity**: Understanding of true entropy (`zxcvbn`), secure hashing algorithms (SHA-1 for k-anonymity), and random secure generation.
 
 ---
 
-## 💻 Technologies Used
+## 📂 Project Structure
 
-- **Language:** Python 3
-- **GUI Framework:** CustomTkinter
-- **Security Engine:** `zxcvbn` (Password strength estimator)
-- **API Integration:** `requests` (Have I Been Pwned API)
-- **Deployment:** PyInstaller (Compiled to standalone `.exe`)
+This project is available in two formats:
 
-### 📂 Project Structure
-
+### 1. Python Desktop Version (Root Folder)
 - `main.py` - The main entry point. Houses the UI and real-time update logic.
 - `analyzer.py` - The core logic for evaluating password strength and generating random passwords.
 - `hibp.py` - The API integration for Have I Been Pwned with built-in error handling.
-- `common_passwords.txt` - A local text file containing common passwords to instantly flag.
+
+### 2. Static Web App Version (`web/` Folder)
+- `index.html` - The modern, glassmorphic layout.
+- `style.css` - Premium styling and micro-animations.
+- `app.js` - Client-side JS handling `zxcvbn`, the HIBP API fetch, and generation logic.
 
 ---
 
-## 📥 Installation
+## 📥 Installation (Python Version)
 
 1. **Clone the repository:**
-
    ```bash
    git clone https://github.com/Talha18-gif/Password_Analyzer.git
    cd Password_Analyzer
    ```
 
 2. **Install the required dependencies:**
-
    ```bash
    pip install customtkinter zxcvbn requests
    ```
 
 3. **Run the Application:**
-
    ```bash
    python main.py
    ```
