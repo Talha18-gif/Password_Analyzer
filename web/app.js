@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('password-input');
     const toggleVisibilityBtn = document.getElementById('toggle-visibility');
     const eyeIcon = document.getElementById('eye-icon');
+    const copyBtn = document.getElementById('copy-btn');
+    const copyIcon = document.getElementById('copy-icon');
     const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
     const crackTimeText = document.getElementById('crack-time');
@@ -45,6 +47,28 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             // Eye on icon
             eyeIcon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+        }
+    });
+
+    // Copy to Clipboard
+    copyBtn.addEventListener('click', async () => {
+        const password = passwordInput.value;
+        if (!password) return;
+        
+        try {
+            await navigator.clipboard.writeText(password);
+            
+            // Show checkmark icon
+            copyIcon.innerHTML = `<polyline points="20 6 9 17 4 12"></polyline>`;
+            copyIcon.style.color = "var(--color-strong)";
+            
+            setTimeout(() => {
+                // Revert to copy icon
+                copyIcon.innerHTML = `<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>`;
+                copyIcon.style.color = "currentColor";
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
         }
     });
 
