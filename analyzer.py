@@ -4,6 +4,7 @@ import string
 import random
 import sys
 import os
+import math
 
 def resource_path(relative_path):
     """Get absolute path to resource, works for dev and for PyInstaller"""
@@ -48,13 +49,23 @@ def evaluate_password(password: str) -> dict:
     if is_common:
         score = 0
 
+    def calculate_math_entropy(pwd: str) -> float:
+        if not pwd: return 0.0
+        pool_size = 0
+        if any(c.islower() for c in pwd): pool_size += 26
+        if any(c.isupper() for c in pwd): pool_size += 26
+        if any(c.isdigit() for c in pwd): pool_size += 10
+        if any(c in string.punctuation for c in pwd): pool_size += 32
+        return round(len(pwd) * math.log2(pool_size), 2) if pool_size > 0 else 0.0
+
     return {
         'score': score,
         'score_percentage': int((score / 4) * 100),
         'suggestions': result['feedback']['suggestions'],
         'warning': result['feedback']['warning'],
         'time_to_crack': result['crack_times_display']['offline_fast_hashing_1e10_per_second'],
-        'is_common': is_common
+        'is_common': is_common,
+        'math_entropy': calculate_math_entropy(password)
     }
 
 def generate_strong_password(length=14) -> str:

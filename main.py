@@ -145,6 +145,7 @@ class App(ctk.CTk):
         self.feedback_textbox.delete("1.0", "end")
         
         if password:
+            self.feedback_textbox.insert("end", f"Mathematical Entropy: {result['math_entropy']} bits (H = L × log₂(N))\n")
             self.feedback_textbox.insert("end", f"Estimated time to crack: {result['time_to_crack']}\n\n")
             if result['warning']:
                 self.feedback_textbox.insert("end", f"⚠️ Warning: {result['warning']}\n\n")

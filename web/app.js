@@ -8,8 +8,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const strengthBar = document.getElementById('strength-bar');
     const strengthText = document.getElementById('strength-text');
     const crackTimeText = document.getElementById('crack-time');
+    const mathEntropyText = document.getElementById('math-entropy');
     
     const warningBox = document.getElementById('warning-box');
+
+    // Load common passwords
+    const commonPasswords = new Set();
+    fetch('common_passwords.txt')
+        .then(res => res.text())
+        .then(text => {
+            text.split('\n').forEach(line => {
+                if (line.trim()) commonPasswords.add(line.trim());
+            });
+        })
+        .catch(err => console.error("Could not load common passwords", err));
+
+    function calculateMathEntropy(pwd) {
+        if (!pwd) return 0.0;
+        let poolSize = 0;
+        if (/[a-z]/.test(pwd)) poolSize += 26;
+        if (/[A-Z]/.test(pwd)) poolSize += 26;
+        if (/[0-9]/.test(pwd)) poolSize += 10;
+        if (/[^a-zA-Z0-9]/.test(pwd)) poolSize += 32;
+        return poolSize > 0 ? (pwd.length * Math.log2(poolSize)).toFixed(2) : 0.0;
+    }
     const warningText = document.getElementById('warning-text');
     const suggestionsBox = document.getElementById('suggestions-box');
     const suggestionsList = document.getElementById('suggestions-list');
@@ -84,7 +106,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Use zxcvbn to evaluate
         const result = zxcvbn(password);
-        const score = result.score; // 0 to 4
+        let score = result.score; // 0 to 4
+        const feedback = result.feedback;
+
+        if (commonPasswords.has(password)) {
+            score = 0;
+            feedback.warning = "This is a very common password!";
+        }
+
+        const mathEntropy = calculateMathEntropy(password);
+        mathEntropyText.textContent = `Mathematical Entropy: ${mathEntropy} bits (H = L × log₂(N))`;
         
         // Update Meter
         strengthBar.style.width = `${(score === 0 ? 0.5 : score) * 25}%`;
@@ -96,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         crackTimeText.textContent = `Crack time: ${result.crack_times_display.offline_fast_hashing_1e10_per_second}`;
 
         // Feedback Logic
-        updateFeedback(score, result.feedback);
+        updateFeedback(score, feedback);
     });
 
     function resetUI() {
